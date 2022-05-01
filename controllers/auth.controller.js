@@ -1,4 +1,5 @@
 import UserSchema from '../models/User.js'
+import { generateToken } from '../utils/tokenManager.js'
 
 export const register = async (req, res) => {
   const { email, password } = req.body
@@ -29,9 +30,20 @@ export const login = async (req, res) => {
       return res.status(403).json({ message: 'Incorrect password' })
     }
 
-    return res.status(200).json({ ok: true })
+    const { token, expiresIn } = generateToken(user._id)
+
+    return res.status(200).json({ token, expiresIn })
   } catch (err) {
     console.log(`Login error: ${err}`)
     return res.status(500).json({ message: 'Error logging in user' })
+  }
+}
+
+export const infoUser = async (req, res) => {
+  try {
+    const user = await UserSchema.findById(req.uid)
+    return res.status(200).json({ id: user.id, email: user.email })
+  } catch (err) {
+    return res.status(401).json({ message: err.message, code: err.code })
   }
 }
