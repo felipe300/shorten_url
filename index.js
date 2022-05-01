@@ -9,7 +9,7 @@ const port = process.env.PORT || 5000
 const apiVersion = '/api/v1'
 
 app.use(express.json())
-app.use(apiVersion, authRouter)
+app.use(`${apiVersion}/auth`, authRouter)
 
 app.listen(port, () => {
   console.log(`App listening at http://localhost:${port} 🔥`)

@@ -1,9 +1,9 @@
-import express from 'express'
+import { Router } from 'express'
+import { validationResultExpress } from '../middlewares/validationResultExpress.js'
 import { login, register } from '../controllers/auth.controller.js'
 import { validations } from '../utils/authValidations.js'
-import { validationResultExpress } from '../middlewares/validationResultExpress.js'
 
-const router = express.Router()
+const router = Router()
 
 router.post('/register', validations, validationResultExpress, register)
 validations.pop()
