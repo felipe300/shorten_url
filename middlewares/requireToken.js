@@ -11,7 +11,6 @@ export const requireToken = (req, res, next) => {
 
     next()
   } catch (err) {
-    console.log(`Require token error: ${err}`)
-    return res.status(401).json({ error: err.message })
+    return res.status(401).json({ error: 'Invalid token' })
   }
 }

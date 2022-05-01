@@ -8,7 +8,6 @@ export const register = async (req, res) => {
     await user.save()
     return res.status(201).json({ ok: true })
   } catch (err) {
-    console.log(`Register error: ${err}`)
     if (err.code === 11000) {
       return res.status(400).json({ error: 'Email already exists' })
     }
@@ -34,16 +33,15 @@ export const login = async (req, res) => {
 
     return res.status(200).json({ token, expiresIn })
   } catch (err) {
-    console.log(`Login error: ${err}`)
     return res.status(500).json({ message: 'Error logging in user' })
   }
 }
 
 export const infoUser = async (req, res) => {
   try {
-    const user = await UserSchema.findById(req.uid)
+    const user = await UserSchema.findById(req.uid).lean()
     return res.status(200).json({ id: user.id, email: user.email })
   } catch (err) {
-    return res.status(401).json({ message: err.message, code: err.code })
+    return res.status(401).json({ message: 'Error getting user info' })
   }
 }
