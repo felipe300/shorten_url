@@ -9,9 +9,26 @@
 <body>
   <h1>Ruta protegida</h1>
   <div>
+    <button id="logout">Logout</button>
     <h2 id="app">Email:</h2>
   </div>
   <script>
+    const logout = document.getElementById('logout');
+    logout.addEventListener('click', async () => {
+      try {
+        const res = await fetch('/api/v1/auth/logout', {
+          method: 'GET'
+        })
+        const { email } = await res.json()
+        
+        if (res.ok){
+          document.getElementById('app').textContent = email
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    });
+
     document.addEventListener("DOMContentLoaded", async (e) => {
       try {
         const resToken = await fetch("/api/v1/auth/refresh", {

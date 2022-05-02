@@ -58,3 +58,8 @@ export const refreshToken = (req, res, next) => {
     return res.status(401).json({ error: 'Invalid token' })
   }
 }
+
+export const logout = (req, res) => {
+  res.clearCookie('refreshToken')
+  return res.status(200).json({ ok: true })
+}
