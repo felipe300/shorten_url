@@ -1,4 +1,3 @@
-import jwt from 'jsonwebtoken'
 import UserSchema from '../models/User.js'
 import { generateRefreshToken, generateToken } from '../utils/tokenManager.js'
 
@@ -46,16 +45,12 @@ export const infoUser = async (req, res) => {
 
 export const refreshToken = (req, res, next) => {
   try {
-    const refreshTokenCokkie = req.cookies?.refreshToken
-    if (!refreshTokenCokkie) throw new Error('No refreshToken provided')
-
-    const { uid } = jwt.verify(refreshTokenCokkie, process.env.JWT_REFRESH)
-
-    const { token, expiresIn } = generateToken(uid)
+    const { token, expiresIn } = generateToken(req.uid)
 
     return res.status(200).json({ token, expiresIn })
   } catch (err) {
-    return res.status(401).json({ error: 'Invalid token' })
+    console.log(err)
+    return res.status(500).json({ error: 'Error refreshing token' })
   }
 }
 
