@@ -1,6 +1,7 @@
 import { body } from 'express-validator'
+import { validationResultExpress } from './validationResultExpress.js'
 
-export const validations = [
+export const authValidations = [
   body('email', 'invalid email format').trim().isEmail().normalizeEmail(),
   body('password', 'password must have minimun 6 characters')
     .trim()
@@ -10,5 +11,6 @@ export const validations = [
       throw new Error('passwords do not match')
     }
     return value
-  })
+  }),
+  validationResultExpress
 ]
