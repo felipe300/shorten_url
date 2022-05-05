@@ -8,7 +8,7 @@ import { requireToken } from '../middlewares/requireToken.js'
 const router = Router()
 
 router.get('/', requireToken, getAllLinks)
-router.get('/:id', requireToken, getLink)
+router.get('/:nanoLink', getLink)
 router.post('/', requireToken, bodyLinkValidations, createLink)
 router.patch('/:id',
   requireToken, paramLinkValidator, bodyLinkValidations, updateLink)

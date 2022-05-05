@@ -12,14 +12,12 @@ export const getAllLinks = async (req, res) => {
 
 export const getLink = async (req, res) => {
   try {
-    const { id } = req.params
-    const link = await LinkSchema.findById(id)
+    const { nanoLink } = req.params
+    const link = await LinkSchema.findOne({ nanoLink })
 
     if (!link) return res.status(404).json({ error: 'Link not found' })
-    if (!link.uid.equals(req.uid)) {
-      return res.status(404).json({ error: 'originLink do not match User' })
-    }
-    return res.status(200).json({ link })
+
+    return res.status(200).json({ originLink: link.originLink })
   } catch (err) {
     if (err.kind === 'ObjectId') {
       return res.status(403).json({ error: 'Invalid id format' })
