@@ -52,7 +52,6 @@ export const refreshToken = (req, res, next) => {
 
     return res.status(200).json({ token, expiresIn })
   } catch (err) {
-    console.log(err)
     return res.status(500).json({ error: 'Error refreshing token' })
   }
 }

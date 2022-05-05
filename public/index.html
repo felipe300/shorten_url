@@ -31,7 +31,6 @@
           body: JSON.stringify({ email: email.value, password: password.value })
         })
         const { token } = await res.json()
-        console.log({ token })
       } catch (err) {
         console.log(err)
       }
