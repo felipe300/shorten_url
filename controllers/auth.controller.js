@@ -6,7 +6,10 @@ export const register = async (req, res) => {
   try {
     const user = new UserSchema({ email, password })
     await user.save()
-    return res.status(201).json({ ok: true })
+
+    const { token, expiresIn } = generateToken(user._id)
+    generateRefreshToken(user.id, res)
+    return res.status(201).json({ token, expiresIn })
   } catch (err) {
     if (err.code === 11000) {
       return res.status(400).json({ error: 'Email already exists' })
