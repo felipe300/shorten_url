@@ -43,13 +43,29 @@ export const createLink = async (req, res) => {
   }
 }
 
-export const updateLink = (req, res) => {
+export const updateLink = async (req, res) => {
   try {
-    return res.json({
-      message: 'update link'
-    })
+    const { id } = req.params
+    let { originLink } = req.body
+    if (!originLink.startsWith('https://')) {
+      originLink = `https://${originLink}`
+    }
+
+    const link = await LinkSchema.findById(id)
+
+    if (!link) return res.status(404).json({ error: 'Link not found' })
+    if (!link.uid.equals(req.uid)) {
+      return res.status(404).json({ error: 'originLink do not match User' })
+    }
+
+    link.originLink = originLink
+    await link.save({ originLink })
+    return res.status(200).json({ message: 'link updated', link })
   } catch (err) {
-    return res.status(500).json({ message: 'Internal server error' })
+    if (err.kind === 'ObjectId') {
+      return res.status(403).json({ error: 'Invalid id format' })
+    }
+    return res.status(500).json({ error: 'Internal server error' })
   }
 }
 
