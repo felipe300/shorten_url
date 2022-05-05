@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser'
 
 import './config/connectDB.js'
 import authRouter from './routes/auth.route.js'
+import linkRouter from './routes/link.route.js'
 
 const app = express()
 const apiVersion = '/api/v1'
@@ -14,6 +15,7 @@ app.use(express.json())
 app.use(cookieParser())
 
 app.use(`${apiVersion}/auth`, authRouter)
+app.use(`${apiVersion}/links`, linkRouter)
 
 const port = process.env.PORT || 5000
 app.listen(port, () => {
